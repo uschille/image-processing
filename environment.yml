@@ -1,0 +1,13 @@
+name: image-processing-environment
+
+channels:
+  - defaults
+  - conda-forge
+
+dependencies:
+  - python=3.8
+  - jupyterlab>=1.0
+  - ipympl>=0.7
+  - watermark>=2.0
+  - matplotlib>=3.3
+  - scikit-image>=0.17
