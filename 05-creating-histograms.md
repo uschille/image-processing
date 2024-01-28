@@ -19,18 +19,18 @@ exercises: 40
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In this episode, we will learn how to use skimage functions to create and
+In this episode, we will learn how to use scikit-image functions to create and
 display histograms for images.
 
 ## First, import the packages needed for this episode
 
 ```python
-import numpy as np
-import matplotlib.pyplot as plt
-import ipympl
 import imageio.v3 as iio
-import skimage
-import skimage.draw
+import ipympl
+import matplotlib.pyplot as plt
+import numpy as np
+import skimage as ski
+
 %matplotlib widget
 ```
 
@@ -61,7 +61,7 @@ Here we load the image in grayscale instead of full colour, and display it:
 plant_seedling = iio.imread(uri="data/plant-seedling.jpg", mode="L")
 
 # convert the image to float dtype with a value range from 0 to 1
-plant_seedling = skimage.util.img_as_float(plant_seedling)
+plant_seedling = ski.util.img_as_float(plant_seedling)
 
 # display the image
 fig, ax = plt.subplots()
@@ -73,8 +73,8 @@ plt.imshow(plant_seedling, cmap="gray")
 Again, we use the `iio.imread()` function to load our image.
 Then, we convert the grayscale image of integer dtype, with 0-255 range, into
 a floating-point one with 0-1 range, by calling the function
-`skimage.util.img_as_float`.
-We will keep working with images in the value range 0 to 1 in this lesson.
+`ski.util.img_as_float`. We can also calculate histograms for 8 bit images as we will see in the
+subsequent exercises.
 
 We now use the function `np.histogram` to compute the histogram of our image
 which, after all, is a NumPy array:
@@ -90,7 +90,7 @@ the 256 possible values in the grayscale image.
 
 The parameter `range` is the range of values each of the pixels in the image can have.
 Here, we pass 0 and 1,
-which is the value range of our input image after transforming it to grayscale.
+which is the value range of our input image after conversion to floating-point.
 
 The first output of the `np.histogram` function is a one-dimensional NumPy array,
 with 256 rows and one column,
@@ -108,7 +108,7 @@ For the last bin, the array also has to contain the stop,
 so it has one more element, than the histogram.
 
 Next, we turn our attention to displaying the histogram,
-by taking advantage of the plotting facilities of the `matplotlib` library.
+by taking advantage of the plotting facilities of the Matplotlib library.
 
 ```python
 # configure and draw the histogram figure
@@ -155,7 +155,7 @@ it produces this histogram:
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
-## Histograms in matplotlib
+## Histograms in Matplotlib
 
 Matplotlib provides a dedicated function to compute and display histograms:
 `plt.hist()`.
@@ -167,7 +167,7 @@ Here, you could use it by calling
 `plt.hist(image.flatten(), bins=256, range=(0, 1))`
 instead of
 `np.histogram()` and `plt.plot()`
-(`*.flatten()` is a numpy function that converts our two-dimensional
+(`*.flatten()` is a NumPy function that converts our two-dimensional
 image into a one-dimensional array).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -201,13 +201,16 @@ it to the `np.histogram` function.
 # read the image as grayscale from the outset
 plant_seedling = iio.imread(uri="data/plant-seedling.jpg", mode="L")
 
+# convert the image to float dtype with a value range from 0 to 1
+plant_seedling = ski.util.img_as_float(plant_seedling)
+
 # display the image
 fig, ax = plt.subplots()
 plt.imshow(plant_seedling, cmap="gray")
 
-# create mask here, using np.zeros() and skimage.draw.rectangle()
+# create mask here, using np.zeros() and ski.draw.rectangle()
 mask = np.zeros(shape=plant_seedling.shape, dtype="bool")
-rr, cc = skimage.draw.rectangle(start=(199, 410), end=(384, 485))
+rr, cc = ski.draw.rectangle(start=(199, 410), end=(384, 485))
 mask[rr, cc] = True
 
 # display the mask
@@ -348,10 +351,10 @@ with the
 function call,
 and then add a histogram line of the correct colour to the plot with the
 
-`plt.plot(bin_edges[0:-1], histogram, color=c)`
+`plt.plot(bin_edges[0:-1], histogram, color=color)`
 
 function call.
-Note the use of our loop variables, `channel_id` and `c`.
+Note the use of our loop variables, `channel_id` and `color`.
 
 Finally we label our axes and display the histogram, shown here:
 
@@ -403,14 +406,14 @@ And, the program should produce a colour histogram that looks like this:
 ```python
 # create a circular mask to select the 7th well in the first row
 mask = np.zeros(shape=wellplate.shape[0:2], dtype="bool")
-circle = skimage.draw.disk(center=(240, 1053), radius=49, shape=wellplate.shape[0:2])
+circle = ski.draw.disk(center=(240, 1053), radius=49, shape=wellplate.shape[0:2])
 mask[circle] = 1
 
 # just for display:
 # make a copy of the image, call it masked_image, and
-# use np.logical_not() and indexing to apply the mask to it
-masked_img = wellplate[:]
-masked_img[np.logical_not(mask)] = 0
+# zero values where mask is False
+masked_img = np.array(wellplate)
+masked_img[~mask] = 0
 
 # create a new figure and display masked_img, to verify the
 # validity of your mask
@@ -450,5 +453,3 @@ plt.ylabel("pixel count")
 - We can display histograms using the `matplotlib pyplot` `figure()`, `title()`, `xlabel()`, `ylabel()`, `xlim()`, `plot()`, and `show()` functions.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

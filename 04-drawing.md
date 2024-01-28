@@ -6,8 +6,8 @@ exercises: 45
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
-- Create a blank, black skimage image.
-- Draw rectangles and other shapes on skimage images.
+- Create a blank, black scikit-image image.
+- Draw rectangles and other shapes on scikit-image images.
 - Explain how a white shape on a black background can be used as a mask to select specific parts of an image.
 - Use bitwise operations to apply a mask to an image.
 
@@ -15,11 +15,11 @@ exercises: 45
 
 :::::::::::::::::::::::::::::::::::::::: questions
 
-- How can we draw on skimage images and use bitwise operations and masks to select certain parts of an image?
+- How can we draw on scikit-image images and use bitwise operations and masks to select certain parts of an image?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-The next series of episodes covers a basic toolkit of skimage operators.
+The next series of episodes covers a basic toolkit of scikit-image operators.
 With these tools,
 we will be able to create programs to perform simple analyses of images
 based on changes in colour or shape.
@@ -27,24 +27,23 @@ based on changes in colour or shape.
 ## First, import the packages needed for this episode
 
 ```python
-import numpy as np
-import matplotlib.pyplot as plt
-import ipympl
 import imageio.v3 as iio
-import skimage
-import skimage.draw
+import ipympl
+import matplotlib.pyplot as plt
+import numpy as np
+import skimage as ski
+
 %matplotlib widget
 ```
 
-Here, we import the `draw` submodule of `skimage` as well as packages familiar
-from earlier in the lesson.
+Here, we import the same packages as earlier in the lesson.
 
 ## Drawing on images
 
 Often we wish to select only a portion of an image to analyze,
 and ignore the rest.
 Creating a rectangular sub-image with slicing,
-as we did in [the *Image Representation in skimage* episode](03-skimage-images.md)
+as we did in [the *Working with scikit-image* episode](03-skimage-images.md)
 is one option for simple cases.
 Another option is to create another special image,
 of the same size as the original,
@@ -53,7 +52,7 @@ Such an image is called a *mask*.
 In preparing a mask, we sometimes need to be able to draw a shape -
 a circle or a rectangle, say -
 on a black image.
-skimage provides tools to do that.
+scikit-image provides tools to do that.
 
 Consider this image of maize seedlings:
 
@@ -113,7 +112,7 @@ Next, we draw a filled, rectangle on the mask:
 
 ```python
 # Draw filled rectangle on the mask image
-rr, cc = skimage.draw.rectangle(start=(357, 44), end=(740, 720))
+rr, cc = ski.draw.rectangle(start=(357, 44), end=(740, 720))
 mask[rr, cc] = False
 
 # Display mask image
@@ -133,13 +132,13 @@ The function returns the rectangle as row (`rr`) and column (`cc`) coordinate ar
 
 ## Check the documentation!
 
-When using an skimage function for the first time - or the fifth time -
+When using an scikit-image function for the first time - or the fifth time -
 it is wise to check how the function is used, via
-[the skimage documentation](https://scikit-image.org/docs/dev/user_guide)
+[the scikit-image documentation](https://scikit-image.org/docs/dev/user_guide)
 or other usage examples on programming-related sites such as
 [Stack Overflow](https://stackoverflow.com/).
-Basic information about skimage functions can be found interactively in Python,
-via commands like `help(skimage)` or `help(skimage.draw.rectangle)`.
+Basic information about scikit-image functions can be found interactively in Python,
+via commands like `help(ski)` or `help(ski.draw.rectangle)`.
 Take notes in your lab notebook.
 And, it is always wise to run some test code to verify
 that the functions your program uses are behaving in the manner you intend.
@@ -170,13 +169,13 @@ such that it is easier for other people to understand your code.
 ## Other drawing operations (15 min)
 
 There are other functions for drawing on images,
-in addition to the `skimage.draw.rectangle()` function.
+in addition to the `ski.draw.rectangle()` function.
 We can draw circles, lines, text, and other shapes as well.
 These drawing functions may be useful later on, to help annotate images
 that our programs produce.
 Practice some of these functions here.
 
-Circles can be drawn with the `skimage.draw.disk()` function,
+Circles can be drawn with the `ski.draw.disk()` function,
 which takes two parameters:
 the (ry, cx) point of the centre of the circle,
 and the radius of the circle.
@@ -184,13 +183,13 @@ There is an optional `shape` parameter that can be supplied to this function.
 It will limit the output coordinates for cases where the circle
 dimensions exceed the ones of the image.
 
-Lines can be drawn with the `skimage.draw.line()` function,
+Lines can be drawn with the `ski.draw.line()` function,
 which takes four parameters:
 the (ry, cx) coordinate of one end of the line,
 and the (ry, cx) coordinate of the other end of the line.
 
-Other drawing functions supported by skimage can be found in
-[the skimage reference pages](https://scikit-image.org/docs/dev/api/skimage.draw.html?highlight=draw#module-skimage.draw).
+Other drawing functions supported by scikit-image can be found in
+[the scikit-image reference pages](https://scikit-image.org/docs/dev/api/skimage.draw.html?highlight=draw#module-skimage.draw).
 
 First let's make an empty, black image with a size of 800x600 pixels.
 Recall that a colour image has three channels for the colours red, green, and blue
@@ -215,7 +214,7 @@ Drawing a circle:
 
 ```python
 # Draw a blue circle with centre (200, 300) in (ry, cx) coordinates, and radius 100
-rr, cc = skimage.draw.disk(center=(200, 300), radius=100, shape=canvas.shape[0:2])
+rr, cc = ski.draw.disk(center=(200, 300), radius=100, shape=canvas.shape[0:2])
 canvas[rr, cc] = (0, 0, 255)
 ```
 
@@ -223,7 +222,7 @@ Drawing a line:
 
 ```python
 # Draw a green line from (400, 200) to (500, 700) in (ry, cx) coordinates
-rr, cc = skimage.draw.line(r0=400, c0=200, r1=500, c1=700)
+rr, cc = ski.draw.line(r0=400, c0=200, r1=500, c1=700)
 canvas[rr, cc] = (0, 255, 0)
 ```
 
@@ -249,7 +248,7 @@ canvas = np.zeros(shape=(600, 800, 3), dtype="uint8")
 
 # draw a blue circle at a random location 15 times
 for i in range(15):
-    rr, cc = skimage.draw.disk(center=(
+    rr, cc = ski.draw.disk(center=(
          random.randrange(600),
          random.randrange(800)),
          radius=50,
@@ -278,7 +277,7 @@ for i in range(15):
     x = random.random()
     if x < 0.33:
         # draw a blue circle at a random location
-        rr, cc = skimage.draw.disk(center=(
+        rr, cc = ski.draw.disk(center=(
             random.randrange(600),
             random.randrange(800)),
             radius=50,
@@ -287,7 +286,7 @@ for i in range(15):
         color = (0, 0, 255)
     elif x < 0.66:
         # draw a green line at a random location
-        rr, cc = skimage.draw.line(
+        rr, cc = ski.draw.line(
             r0=random.randrange(600),
             c0=random.randrange(800),
             r1=random.randrange(600),
@@ -296,7 +295,7 @@ for i in range(15):
         color = (0, 255, 0)
     else:
         # draw a red rectangle at a random location
-        rr, cc = skimage.draw.rectangle(
+        rr, cc = ski.draw.rectangle(
             start=(random.randrange(600), random.randrange(800)),
             extent=(50, 50),
             shape=canvas.shape[0:2],
@@ -359,11 +358,11 @@ maize_seedlings = iio.imread(uri="data/maize-seedlings.tif")
 mask = np.ones(shape=maize_seedlings.shape[0:2], dtype="bool")
 
 # Draw a filled rectangle on the mask image
-rr, cc = skimage.draw.rectangle(start=(357, 44), end=(740, 720))
+rr, cc = ski.draw.rectangle(start=(357, 44), end=(740, 720))
 mask[rr, cc] = False
 ```
 
-Then, we use numpy indexing to remove the portions of the image,
+Then, we use NumPy indexing to remove the portions of the image,
 where the mask is `True`:
 
 ```python
@@ -416,7 +415,7 @@ remote = np.array(remote)
 mask = np.ones(shape=remote.shape[0:2], dtype="bool")
 
 # Draw a filled rectangle on the mask image
-rr, cc = skimage.draw.rectangle(start=(93, 1107), end=(1821, 1668))
+rr, cc = ski.draw.rectangle(start=(93, 1107), end=(1821, 1668))
 mask[rr, cc] = False
 
 # Apply the mask
@@ -484,7 +483,7 @@ with open("data/centers.txt", "r") as center_file:
         ry = int(coordinates[1])
 
         # ... and drawing a circle on the mask
-        rr, cc = skimage.draw.disk(center=(ry, cx), radius=16, shape=wellplate.shape[0:2])
+        rr, cc = ski.draw.disk(center=(ry, cx), radius=16, shape=wellplate.shape[0:2])
         mask[rr, cc] = False
 
 # apply the mask
@@ -554,7 +553,7 @@ for row in range(12):
     for col in range(8):
 
         # ... and drawing a circle on the mask
-        rr, cc = skimage.draw.disk(center=(ry, cx), radius=16, shape=wellplate.shape[0:2])
+        rr, cc = ski.draw.disk(center=(ry, cx), radius=16, shape=wellplate.shape[0:2])
         mask[rr, cc] = False
         cx += deltaCX
     # after one complete row, move to next row
@@ -575,9 +574,7 @@ plt.imshow(wellplate)
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - We can use the NumPy `zeros()` function to create a blank, black image.
-- We can draw on skimage images with functions such as `skimage.draw.rectangle()`, `skimage.draw.disk()`, `skimage.draw.line()`, and more.
+- We can draw on scikit-image images with functions such as `ski.draw.rectangle()`, `ski.draw.disk()`, `ski.draw.line()`, and more.
 - The drawing functions return indices to pixels that can be set directly.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

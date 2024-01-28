@@ -2,6 +2,19 @@
 title: Instructor Notes
 ---
 
+## Estimated Timings
+
+This is a relatively new curriculum.
+The estimated timings for each episode are based on limited experience 
+and should be taken as a rough guide only.
+If you teach the curriculum,
+the Maintainers would be delighted to receive feedback with 
+information about the time that was required
+for teaching and exercises in each episode of your workshop.
+
+Please [open an issue on the repository](https://github.com/datacarpentry/image-processing/issues/new/choose)
+to share your experience with the lesson Maintainers.
+
 ## Working with Jupyter notebooks
 
 - This lesson is designed to be taught using Jupyter notebooks. We recommend that instructors guide learners to create a new Jupyter notebook for each episode.
@@ -23,10 +36,6 @@ title: Instructor Notes
 - Be aware that learners might get surprising results in the *Keeping only low intensity pixels* exercise, if `plt.imshow` is called without the `vmax` parameter.
   A detailed explanation is given in the *Plotting single channel images (cmap, vmin, vmax)* callout box.
 
-## Blurring
-
-- Take care to avoid mixing up the term "edge" to describe the edges of objects
-  *within* an image and the outer boundaries of the images themselves. Lack of a clear distinction here may be confusing for learners.
 
 ## Questions from Learners
 

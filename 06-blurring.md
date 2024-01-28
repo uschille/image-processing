@@ -7,7 +7,7 @@ exercises: 25
 ::::::::::::::::::::::::::::::::::::::: objectives
 
 - Explain why applying a low-pass blurring filter to an image is beneficial.
-- Apply a Gaussian blur filter to an image using skimage.
+- Apply a Gaussian blur filter to an image using scikit-image.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -17,11 +17,11 @@ exercises: 25
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In this episode, we will learn how to use skimage functions to blur images.
+In this episode, we will learn how to use scikit-image functions to blur images.
 
 When processing an image, we are often interested in identifying objects
 represented within it so that we can perform some further analysis of these
-objects e.g. by counting them, measuring their sizes, etc.
+objects, e.g., by counting them, measuring their sizes, etc.
 An important concept associated with the identification of objects in an image
 is that of *edges*: the lines that represent a transition from one group of
 similar pixels in the image to another different group.
@@ -33,9 +33,9 @@ When we blur an image,
 we make the colour transition from one side of an edge in the image to another
 smooth rather than sudden.
 The effect is to average out rapid changes in pixel intensity.
-A blur is a very common operation we need to perform before other tasks such as
+Blurring is a very common operation we need to perform before other tasks such as
 [thresholding](07-thresholding.md).
-There are several different blurring functions in the `skimage.filters` module,
+There are several different blurring functions in the `ski.filters` module,
 so we will focus on just one here, the *Gaussian blur*.
 
 :::::::::::::::::::::::::::::::::::::::::  callout
@@ -64,10 +64,10 @@ maybe a couple of big features per image.
 
 ## Blurring
 
-Blurring is to make something less clear or distinct.
+To blur is to make something less clear or distinct.
 This could be interpreted quite broadly in the context of image analysis -
 anything that reduces or distorts the detail of an image might apply.
-Applying a low pass filter, which removes detail occurring at high spatial frequencies,
+Applying a low-pass filter, which removes detail occurring at high spatial frequencies,
 is perceived as a blurring effect.
 A Gaussian blur is a filter that makes use of a Gaussian kernel.
 
@@ -83,7 +83,7 @@ is a small matrix which is combined with the image using
 a mathematical technique: *convolution*.
 Different sizes, shapes and contents of kernel produce different effects.
 The kernel can be thought of as a little image in itself,
-and will favour features of a similar size and shape in the main image.
+and will favour features of similar size and shape in the main image.
 On convolution with an image, a big, blobby kernel will retain
 big, blobby, low spatial frequency features.
 
@@ -113,7 +113,7 @@ so that the pixel being worked on is always in its centre.
 In the example shown above, the kernel is square, with a dimension of seven pixels.
 
 To apply the kernel to the current pixel,
-an average of the the colour values of the pixels surrounding it is calculated,
+an average of the colour values of the pixels surrounding it is calculated,
 weighted by the values in the kernel.
 In a Gaussian blur, the pixels nearest the centre of the kernel are
 given more weight than those far away from the centre.
@@ -125,7 +125,7 @@ A Gaussian function maps random variables into a normal distribution or "Bell Cu
 
 | *[https://en.wikipedia.org/wiki/Gaussian\_function#/media/File:Normal\_Distribution\_PDF.svg](https://en.wikipedia.org/wiki/Gaussian_function#/media/File:Normal_Distribution_PDF.svg)* |
 
-The shape of the function is described by a mean value μ, and a variance value σ². The mean determines the central point of the bell curve on the x axis, and the variance describes the spread of the curve.
+The shape of the function is described by a mean value μ, and a variance value σ². The mean determines the central point of the bell curve on the X axis, and the variance describes the spread of the curve.
 
 In fact, when using Gaussian functions in Gaussian blurring, we use a 2D Gaussian function to account for X and Y dimensions, but the same rules apply. The mean μ is always 0, and represents the middle of the 2D kernel. Increasing values of σ² in either dimension increases the amount of blurring in that dimension.
 
@@ -156,7 +156,7 @@ while a smaller sigma value results in a more pronounced peak.
 The mathematics involved in the Gaussian blur filter are not quite that simple,
 but this explanation gives you the basic idea.
 
-To illustrate the blur process,
+To illustrate the blurring process,
 consider the blue channel colour values from the seven-by-seven region
 of the cat image above:
 
@@ -175,6 +175,16 @@ becomes the new value for the centre pixel (3, 3).
 The same process would be used to determine the green and red channel values,
 and then the kernel would be moved over to apply the filter to the
 next pixel in the image.
+
+:::::::::::::::::::::::::::::::::::::::: instructor
+
+## Terminology about image boundaries
+
+Take care to avoid mixing up the term "edge" to describe the edges of objects
+*within* an image and the outer boundaries of the images themselves.
+Lack of a clear distinction here may be confusing for learners.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -233,7 +243,7 @@ are missing from the kernel.
 
 A similar process would be used to fill in all of the other missing pixels from
 the kernel. Other *border modes* are available; you can learn more about them
-in [the skimage documentation](https://scikit-image.org/docs/dev/user_guide).
+in [the scikit-image documentation](https://scikit-image.org/docs/dev/user_guide).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -242,18 +252,18 @@ order to calculate the colour channel values for the blurred image.
 
 ![](fig/blur-demo.gif){alt='Blur demo animation'}
 
-skimage has built-in functions to perform blurring for us, so we do not have to
+scikit-image has built-in functions to perform blurring for us, so we do not have to
 perform all of these mathematical operations ourselves. Let's work through
-an example of blurring an image with the skimage Gaussian blur function.
+an example of blurring an image with the scikit-image Gaussian blur function.
 
-First, import the packages needed for this episode
+First, import the packages needed for this episode:
 
 ```python
-import matplotlib.pyplot as plt
-import ipympl
 import imageio.v3 as iio
-import skimage
-import skimage.filters
+import ipympl
+import matplotlib.pyplot as plt
+import skimage as ski
+
 %matplotlib widget
 ```
 
@@ -275,11 +285,11 @@ Next, we apply the gaussian blur:
 sigma = 3.0
 
 # apply Gaussian blur, creating a new image
-blurred = skimage.filters.gaussian(
+blurred = ski.filters.gaussian(
     image, sigma=(sigma, sigma), truncate=3.5, channel_axis=-1)
 ```
 
-The first two arguments to `skimage.filters.gaussian()` are the image to blur,
+The first two arguments to `ski.filters.gaussian()` are the image to blur,
 `image`, and a tuple defining the sigma to use in ry- and cx-direction,
 `(sigma, sigma)`.
 The third parameter `truncate` is meant to pass the radius of the kernel in
@@ -294,7 +304,7 @@ For example, for a `sigma` of 1.0 the resulting kernel size would be 7,
 while for a `sigma` of 2.0 the kernel size would be 14.
 The default value for `truncate` in scikit-image is 4.0.
 
-The last argument we passed to `skimage.filters.gaussian()` is used to
+The last argument we passed to `ski.filters.gaussian()` is used to
 specify the dimension which contains the (colour) channels.
 Here, it is the last dimension;
 recall that, in Python, the `-1` index refers to the last position.
@@ -305,7 +315,7 @@ image has three dimensions:
 print(image.ndim)
 ```
 
-```output 
+```output
 3
 ```
 
@@ -317,7 +327,132 @@ fig, ax = plt.subplots()
 plt.imshow(blurred)
 ```
 
-![](fig/gaussian-blurred.png){alt='Original image'}
+![](fig/gaussian-blurred.png){alt='Blurred image'}
+
+
+## Visualising Blurring
+
+Somebody said once "an image is worth a thousand words". 
+What is actually happening to the image pixels when we apply blurring may be 
+difficult to grasp. Let's now visualise the effects of blurring from a different
+perspective.
+
+Let's use the petri-dish image from previous episodes:
+
+![
+Graysacle version of the Petri dish image
+](fig/petri-dish.png){alt='Bacteria colony'}
+
+What we want to see here is the pixel intensities from a lateral perspective:
+we want to see the profile of intensities.
+For instance, let's look for the intensities of the pixels along the horizontal
+line at `Y=150`:
+
+```python
+# read colonies color image and convert to grayscale
+image = iio.imread('data/colonies-01.tif')
+image_gray = ski.color.rgb2gray(image)
+
+# define the pixels for which we want to view the intensity (profile)
+xmin, xmax = (0, image_gray.shape[1])
+Y = ymin = ymax = 150
+
+# view the image indicating the profile pixels position
+fig, ax = plt.subplots()
+ax.imshow(image_gray, cmap='gray')
+ax.plot([xmin, xmax], [ymin, ymax], color='red')
+```
+
+![
+Grayscale Petri dish image marking selected pixels for profiling
+](fig/petri-selected-pixels-marker.png){
+alt='Bacteria colony image with selected pixels marker'
+}
+
+The intensity of those pixels we can see with a simple line plot:
+
+```python
+# select the vector of pixels along "Y"
+image_gray_pixels_slice = image_gray[Y, :]
+
+# guarantee the intensity values are in the [0:255] range (unsigned integers)
+image_gray_pixels_slice = ski.img_as_ubyte(image_gray_pixels_slice)
+
+fig = plt.figure()
+ax = fig.add_subplot()
+
+ax.plot(image_gray_pixels_slice, color='red')
+ax.set_ylim(255, 0)
+ax.set_ylabel('L')
+ax.set_xlabel('X')
+```
+
+![
+Intensities profile line plot of pixels along Y=150 in original image
+](fig/petri-original-intensities-plot.png){
+alt='Pixel intensities profile in original image'
+}
+
+And now, how does the same set of pixels look in the corresponding *blurred* image:
+
+```python
+# first, create a blurred version of (grayscale) image
+image_blur = ski.filters.gaussian(image_gray, sigma=3)
+
+# like before, plot the pixels profile along "Y"
+image_blur_pixels_slice = image_blur[Y, :]
+image_blur_pixels_slice = ski.img_as_ubyte(image_blur_pixels_slice)
+
+fig = plt.figure()
+ax = fig.add_subplot()
+
+ax.plot(image_blur_pixels_slice, 'red')
+ax.set_ylim(255, 0)
+ax.set_ylabel('L')
+ax.set_xlabel('X')
+```
+
+![
+Intensities profile of pixels along Y=150 in *blurred* image
+](fig/petri-blurred-intensities-plot.png){
+alt='Pixel intensities profile in blurred image'
+}
+
+And that is why *blurring* is also called *smoothing*.
+This is how low-pass filters affect neighbouring pixels.
+
+Now that we have seen the effects of blurring an image from
+two different perspectives, front and lateral, let's take
+yet another look using a 3D visualisation.
+
+:::::::::::::::::::::::::::::::::::::::::: callout
+
+### 3D Plots with matplotlib
+The code to generate these 3D plots is outside the scope of this lesson
+but can be viewed by following the links in the captions.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+![
+A 3D plot of pixel intensities across the whole Petri dish image before blurring. 
+[Explore how this plot was created with matplotlib](https://gist.github.com/chbrandt/63ba38142630a0586ba2a13eabedf94b). 
+Image credit: [Carlos H Brandt](https://github.com/chbrandt/).
+](fig/3D_petri_before_blurring.png){
+alt='3D surface plot showing pixel intensities across the whole example Petri dish image before blurring'
+}
+
+![
+A 3D plot of pixel intensities after Gaussian blurring of the Petri dish image. 
+Note the 'smoothing' effect on the pixel intensities of the colonies in the image, 
+and the 'flattening' of the background noise at relatively low pixel intensities throughout the image. 
+[Explore how this plot was created with matplotlib](https://gist.github.com/chbrandt/63ba38142630a0586ba2a13eabedf94b). 
+Image credit: [Carlos H Brandt](https://github.com/chbrandt/).
+](fig/3D_petri_after_blurring.png){
+alt='3D surface plot illustrating the smoothing effect on pixel intensities across the whole example Petri dish image after blurring'
+}
+
+
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -365,7 +500,7 @@ For example, a sigma of 1.0 in the ry direction, and 6.0 in the cx direction.
 
 ```python
 # apply Gaussian blur, with a sigma of 1.0 in the ry direction, and 6.0 in the cx direction
-blurred = skimage.filters.gaussian(
+blurred = ski.filters.gaussian(
     image, sigma=(1.0, 6.0), truncate=3.5, channel_axis=-1
 )
 
@@ -377,11 +512,11 @@ plt.imshow(blurred)
 ![](fig/rectangle-gaussian-blurred.png){alt='Rectangular kernel blurred image'}
 
 These unequal sigma values produce a kernel that is rectangular instead of square.
-The result is an image that is much more blurred in the x direction than the
-y direction.
+The result is an image that is much more blurred in the X direction than in the
+Y direction.
 For most use cases, a uniform blurring effect is desirable and
 this kind of asymmetric blurring should be avoided.
-However, it can be helpful in specific circumstances e.g. when noise is present in
+However, it can be helpful in specific circumstances, e.g., when noise is present in
 your image in a particular pattern or orientation, such as vertical lines,
 or when you want to
 [remove uniform noise without blurring edges present in the image in a particular orientation](https://www.researchgate.net/publication/228567435_An_edge_detection_algorithm_based_on_rectangular_Gaussian_kernels_for_machine_vision_applications).
@@ -392,9 +527,9 @@ or when you want to
 
 ## Other methods of blurring
 
-The Gaussian blur is a way to apply a low-pass filter in skimage.
-It is often used to remove Gaussian (i. e., random) noise from the image.
-For other kinds of noise, e.g. "salt and pepper", a
+The Gaussian blur is a way to apply a low-pass filter in scikit-image.
+It is often used to remove Gaussian (i.e., random) noise in an image.
+For other kinds of noise, e.g., "salt and pepper", a
 median filter is typically used.
 See [the `skimage.filters` documentation](https://scikit-image.org/docs/dev/api/skimage.filters.html#module-skimage.filters)
 for a list of available filters.
@@ -403,9 +538,7 @@ for a list of available filters.
 
 - Applying a low-pass blurring filter smooths edges and removes noise from an image.
 - Blurring is often used as a first step before we perform thresholding or edge detection.
-- The Gaussian blur can be applied to an image with the `skimage.filters.gaussian()` function.
+- The Gaussian blur can be applied to an image with the `ski.filters.gaussian()` function.
 - Larger sigma values may remove more noise, but they will also remove detail from an image.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

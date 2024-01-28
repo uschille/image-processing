@@ -17,7 +17,7 @@ easier to install and enjoys more extensive documentation and support.
 
 When the lesson was first adapted to use sckikit-image (see above),
 `skimage.viewer.ImageViewer` was used to inspect images. [This viewer
-is deprecated](https://scikit-image.org/docs/dev/user_guide/viewer.html)
+is deprecated](https://scikit-image.org/docs/stable/user_guide/visualization.html)
 and the lesson maintainers chose to leverage `matplotlib.pyplot.imshow`
 with the pan/zoom and mouse-location tools built into the [Matplotlib
 GUI](https://matplotlib.org/stable/users/interactive.html). The
@@ -28,7 +28,7 @@ instructions, and the backend can be enabled using the `%matplotlib widget` magi
 
 The maintainers discussed the possibility of using [napari](https://napari.org/)
 as an image viewer in the lesson, acknowledging its growing popularity
-and some of the advantages it holds over the `matplotlib`\-based
+and some of the advantages it holds over the Matplotlib-based
 approach, especially for working with image data in more than two
 dimensions.  However, at the time of discussion, napari was still in
 an alpha state of development, and could not be relied on for easy and
@@ -38,5 +38,3 @@ well-suited to use in an official Data Carpentry curriculum.
 The lesson Maintainers and/or Curriculum Advisory Committee (when it
 exists) will monitor the progress of napari and other image viewers,
 and may opt to adopt a new platform in future.
-
-
