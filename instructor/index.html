@@ -161,7 +161,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="03-skimage-images.html">3. Working with skimage</a>
+        <a href="03-skimage-images.html">3. Working with scikit-image</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -272,8 +272,8 @@
       <hr></nav><main id="main-content" class="main-content"><h1 class="schedule-heading">Summary and Schedule</h1>
       
 
-<p>This lesson shows how to use Python and skimage to do basic image
-processing.</p>
+<p>This lesson shows how to use Python and scikit-image to do basic
+image processing.</p>
 <div id="prerequisites" class="callout prereq">
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
@@ -324,11 +324,11 @@ How are images represented in digital format?
 <span class="visually-hidden">Duration: </span>00h 30m
 </td>
 <td>
- 3. <a href="03-skimage-images.html">Working with skimage</a>
+ 3. <a href="03-skimage-images.html">Working with scikit-image</a>
 </td>
 <td>
-How can the skimage Python computer vision library be used to work with
-images?
+How can the scikit-image Python computer vision library be used to work
+with images?
 </td>
 </tr><tr><td>
 <span class="visually-hidden">Duration: </span>02h 30m
@@ -337,8 +337,8 @@ images?
  4. <a href="04-drawing.html">Drawing and Bitwise Operations</a>
 </td>
 <td>
-How can we draw on skimage images and use bitwise operations and masks
-to select certain parts of an image?
+How can we draw on scikit-image images and use bitwise operations and
+masks to select certain parts of an image?
 </td>
 </tr><tr><td>
 <span class="visually-hidden">Duration: </span>04h 00m
@@ -414,8 +414,8 @@ we will use to refer to the folder throughout the lesson.)</p>
 </section><section id="software"><h2 class="section-heading">Software<a class="anchor" aria-label="anchor" href="#software"></a>
 </h2>
 <hr class="half-width"><ol style="list-style-type: decimal"><li>
-<p>Download and install the latest <a href="https://www.anaconda.com/distribution/" class="external-link">Anaconda distribution</a>
-for your operating system. Make sure to choose the Python 3 version (as
+<p>Download and install the latest <a href="https://www.anaconda.com/download/" class="external-link">Anaconda distribution</a> for
+your operating system. Make sure to choose the Python 3 version (as
 opposed to the one with Python 2). If you wish to use an existing
 installation, be sure to upgrade your scikit-image to at least 0.19. You
 can upgrade to the latest scikit-image using the shell command that
@@ -479,27 +479,26 @@ the <code>ipympl</code> package.</p>
 </li>
 <li>
 <p>Open a Jupyter notebook:</p>
-<div class="empty-div" style="margin-bottom: 50px">
-<!-- This div is intentionally empty to allow the solution to float alone -->
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">Instructions for Linux &amp; Mac</h4>
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">
+<div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>Instructions for Linux &amp; Mac</h3>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Open a terminal and type <code>jupyter lab</code>.</p>
 </div>
 </div>
 </div>
 </div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2">Instructions for Windows</h4>
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
+  <h3 class="accordion-header" id="headingSpoiler2">
+<div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>Instructions for Windows</h3>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>Launch the Anaconda Prompt program and type <code>jupyter lab</code>.
 (Running this command on the standard Command Prompt will return an
@@ -520,34 +519,33 @@ the notebook:</p>
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load an image</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">'data/colonies-01.tif'</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># rotate it by 45 degrees</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>rotated <span class="op">=</span> transform.rotate(image<span class="op">=</span>image, angle<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># display the original image and its rotated version side by side</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].imshow(image)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].imshow(rotated)</span></code></pre>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># load an image</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">'data/colonies-01.tif'</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># rotate it by 45 degrees</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>rotated <span class="op">=</span> ski.transform.rotate(image<span class="op">=</span>image, angle<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># display the original image and its rotated version side by side</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].imshow(image)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].imshow(rotated)</span></code></pre>
 </div>
 <p>Upon execution of the cell, a figure with two images should be
 displayed in an interactive widget. When hovering over the images with
 the mouse pointer, the pixel coordinates and colour values are displayed
 below the image.</p>
-<div class="empty-div" style="margin-bottom: 50px">
-<!-- This div is intentionally empty to allow the solution to float alone -->
-</div>
-<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSpoiler3" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
-  <h4 class="accordion-header" id="headingSolution3">Running Cells in a Notebook</h4>
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
+  <h3 class="accordion-header" id="headingSpoiler3">
+<div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>Running Cells in a Notebook</h3>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <p><img src="../fig/jupyter_overview.png" alt="Overview of the Jupyter Notebook graphical user interface" class="figure"> To
 run Python code in a Jupyter notebook cell, click on a cell in the
@@ -562,6 +560,10 @@ you have added the code, you can run the cell by selecting “Run” -&gt;
 </div>
 </div>
 </li>
+<li><p>A small number of exercises will require you to run commands in a
+terminal. Windows users should use PowerShell for this. PowerShell is
+probably installed by default but if not you should <a href="https://apps.microsoft.com/detail/9MZ1SNWT0N5D?hl=en-eg&amp;gl=EG" class="external-link">download
+and install</a> it.</p></li>
 </ol></section></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="../instructor/01-introduction.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
@@ -611,8 +613,8 @@ you have added the code, you can run the cell by selecting “Run” -&gt;
   "url": "https://datacarpentry.github.io/image-processing/instructor/index.html",
   "identifier": "https://datacarpentry.github.io/image-processing/instructor/index.html",
   "dateCreated": "2017-03-14",
-  "dateModified": "2024-01-23",
-  "datePublished": "2024-01-23"
+  "dateModified": "2024-01-28",
+  "datePublished": "2024-01-28"
 }
 
   </script><script>
